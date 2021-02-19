@@ -1,0 +1,30 @@
+{
+  "name": "authorization-app",
+  "version": "0.0.1",
+  "description": "Authorization example.",
+  "main": "src/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Artsiom Platkouski",
+      "email": "komukc.apt@gmail.com",
+      "url": "https://www.linkedin.com/in/artsiom-platkouski/"
+    }
+  ],
+  "keywords": ["authorization"],
+  "homepage": "https://github.com/aplatkouski/authorization-app#README.md",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:aplatkouski/authorization-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aplatkouski/authorization-app/issues"
+  },
+  "browserslist": {
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 2 chrome versions"]
+  }
+}

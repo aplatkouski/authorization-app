@@ -4,6 +4,8 @@
   "description": "Authorization example.",
   "main": "src/index.html",
   "scripts": {
+    "stylelint": "stylelint --syntax scss './src/**/*.scss' --ignore-path .gitignore",
+    "stylelint:fix": "npm run stylelint -- --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
@@ -26,5 +28,9 @@
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all"],
     "development": ["last 2 chrome versions"]
+  },
+  "devDependencies": {
+    "stylelint": "13.10.0",
+    "stylelint-config-twbs-bootstrap": "2.1.0"
   }
 }

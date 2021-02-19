@@ -6,6 +6,9 @@
   "scripts": {
     "lint": "eslint ./src --ext .js,.jsx --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
+    "postinstall": "husky install",
+    "postpublish": "pinst --enable",
+    "prepublishOnly": "pinst --disable",
     "prettier:check": "prettier --check '**/*.+(js|jsx|json|css|md|html)' --ignore-path .gitignore",
     "prettier:write": "prettier --write '**/*.+(js|jsx|json|css|md|html)' --ignore-path .gitignore",
     "stylelint": "stylelint --syntax scss './src/**/*.scss' --ignore-path .gitignore",
@@ -47,6 +50,9 @@
     "eslint-plugin-promise": "4.3.1",
     "eslint-plugin-react": "7.22.0",
     "eslint-plugin-react-hooks": "4.2.0",
+    "husky": "5.0.9",
+    "lint-staged": "10.5.4",
+    "pinst": "2.1.4",
     "prettier": "2.2.1",
     "stylelint": "13.10.0",
     "stylelint-config-twbs-bootstrap": "2.1.0"

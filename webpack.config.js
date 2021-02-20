@@ -11,7 +11,7 @@ const {
 module.exports = {
   mode: 'development',
   entry: {
-    bundle: './src/index.js',
+    bundle: './src/index.jsx',
   },
   target: 'web',
   resolve: {

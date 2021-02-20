@@ -23,7 +23,9 @@
       "url": "https://www.linkedin.com/in/artsiom-platkouski/"
     }
   ],
-  "keywords": ["authorization"],
+  "keywords": [
+    "authorization"
+  ],
   "homepage": "https://github.com/aplatkouski/authorization-app#README.md",
   "repository": {
     "type": "git",
@@ -33,10 +35,25 @@
     "url": "https://github.com/aplatkouski/authorization-app/issues"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 2 chrome versions"]
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 2 chrome versions"
+    ]
   },
   "devDependencies": {
+    "@babel/core": "7.12.17",
+    "@babel/eslint-parser": "7.12.17",
+    "@babel/plugin-proposal-class-properties": "7.12.13",
+    "@babel/plugin-proposal-export-default-from": "7.12.13",
+    "@babel/plugin-proposal-object-rest-spread": "7.12.13",
+    "@babel/plugin-transform-runtime": "7.12.17",
+    "@babel/preset-env": "7.12.17",
+    "@babel/preset-react": "7.12.13",
+    "@babel/runtime": "7.12.18",
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-conventional": "11.0.0",
     "eslint": "7.20.0",

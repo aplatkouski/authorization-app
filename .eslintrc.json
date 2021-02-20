@@ -108,7 +108,10 @@
   },
   "settings": {
     "import/resolver": {
-      "node": {}
+      "node": {},
+      "webpack": {
+        "config": "webpack.config.js"
+      }
     },
     "react": {
       "pragma": "React",

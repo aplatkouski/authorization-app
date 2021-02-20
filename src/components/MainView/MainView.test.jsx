@@ -8,7 +8,7 @@ import MainView from './MainView';
 test('renders MainView', () => {
   const { getByText } = render(
     <Provider store={store}>
-      <MainView isLoading />
+      <MainView isAuth isLoading />
     </Provider>
   );
 

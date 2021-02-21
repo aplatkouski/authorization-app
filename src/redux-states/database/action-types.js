@@ -1,0 +1,2 @@
+export const SHOW_LOADER = 'DATABASE/SHOW_LOADER';
+export const HIDE_LOADER = 'DATABASE/HIDE_LOADER';

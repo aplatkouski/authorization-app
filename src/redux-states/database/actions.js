@@ -20,13 +20,35 @@ export const updateUserProperty = (userId, propertyName, value) => {
   database.ref(`users/${userId}/${propertyName}`).set(value);
 };
 
-export const fetchUsers = async () => {
-  const userListRef = database.ref(`users/`);
+const parseUsersSnapshot = (usersSnapshot) => {
+  const toLocaleDateString = (timestamp) => {
+    const locales = 'ru-Ru';
+    const dateTimeFormatOptions = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    const date = new Date(timestamp);
+    return date.toLocaleDateString(locales, dateTimeFormatOptions);
+  };
   const users = [];
-  await userListRef.once('value', (usersSnapshot) => {
-    usersSnapshot.forEach((userSnapshot) => {
-      users.push({ ...userSnapshot.val(), uid: userSnapshot.key });
+  usersSnapshot.forEach((userSnapshot) => {
+    users.push({
+      ...userSnapshot.val(),
+      id: userSnapshot.key.substring(0, 7),
+      uid: userSnapshot.key,
+      registrationDate: toLocaleDateString(userSnapshot.child('registrationDate').val()),
+      lastLoginDate: toLocaleDateString(userSnapshot.child('lastLoginDate').val()),
     });
   });
-  return Promise.resolve(users);
+  return users;
+};
+
+export const fetchUsers = async () => {
+  const userListRef = database.ref(`users/`);
+  const usersSnapshot = await userListRef.once('value');
+  return Promise.resolve(parseUsersSnapshot(usersSnapshot));
 };

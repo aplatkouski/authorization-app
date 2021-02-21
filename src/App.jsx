@@ -1,11 +1,15 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
 
+import MainView from 'Components/MainView';
 import 'Styles/app.scss';
 
-export default function App() {
+const App = () => {
   return (
-    <div className="App">
-      <h1>Hello world!</h1>
-    </div>
+    <Container className="app-container" fluid>
+      <MainView />
+    </Container>
   );
-}
+};
+
+export default App;

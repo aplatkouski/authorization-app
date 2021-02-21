@@ -1,4 +1,4 @@
-import { database } from 'Utils/firebase';
+import { auth, database } from 'Utils/firebase';
 import * as t from './action-types';
 
 export const showLoader = () => ({
@@ -51,3 +51,10 @@ export const fetchUsers = async () => {
   const usersSnapshot = await userListRef.once('value');
   return parseUsersSnapshot(usersSnapshot);
 };
+
+export const login = async ({ email, password }) => {
+  await auth.signInWithEmailAndPassword(email, password);
+  return String(auth.currentUser.uid);
+};
+
+export const signOut = async () => auth.signOut();

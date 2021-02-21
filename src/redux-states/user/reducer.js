@@ -8,9 +8,9 @@ const initialState = {
 };
 
 const handlers = {
-  [t.FETCH_USERS]: (state, { payload: users }) => ({
+  [t.FETCH_USERS]: (state, { payload: allUsers }) => ({
     ...state,
-    users,
+    allUsers,
   }),
   [t.FETCH_USERS_FAILURE]: (state, { payload: errorMessage }) => ({
     ...state,

@@ -8,6 +8,10 @@ const initialState = {
 };
 
 const handlers = {
+  [t.FAILURE]: (state, { payload: errorMessage }) => ({
+    ...state,
+    errorMessage,
+  }),
   [t.FETCH_USERS]: (state, { payload: allUsers }) => ({
     ...state,
     allUsers,
@@ -24,6 +28,10 @@ const handlers = {
     ...state,
     uid,
     isAuth: true,
+  }),
+  [t.SIGN_OUT]: (state) => ({
+    ...state,
+    ...initialState,
   }),
   [t.REGISTER_FAILURE]: (state, { payload: errorMessage }) => ({
     ...state,

@@ -28,6 +28,7 @@ const LoginModal = ({ errorMessage, isAuth }) => {
         {errorMessage && (
           <Alert className="text-warning text-center">{errorMessage}</Alert>
         )}
+        <AuthenticationForm isRegistration={isRegistration} />
       </Modal.Body>
       <Modal.Footer className="pt-0 pb-0">
         {isRegistration ? (

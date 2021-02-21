@@ -16,6 +16,10 @@ export const putUserData = async (user) => {
   return Promise.resolve(user);
 };
 
+export const updateUserProperty = (userId, propertyName, value) => {
+  database.ref(`users/${userId}/${propertyName}`).set(value);
+};
+
 export const fetchUsers = async () => {
   const userListRef = database.ref(`users/`);
   const users = [];

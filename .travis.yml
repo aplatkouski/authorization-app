@@ -19,7 +19,7 @@ before_install:
   - npm i -g npm@latest
 
 install:
-  - npm install
+  - npm install --force
 
 script:
   - npm run lint

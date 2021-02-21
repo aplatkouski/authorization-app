@@ -54,6 +54,18 @@ export const updateUserData = (user) => async (dispatch) => {
   }
 };
 
+export const blockUser = (user) => async (dispatch) => {
+  const { uid, ...rest } = user;
+  databaseActions.updateUserProperty(uid, 'isActive', false);
+  dispatch(updateUserData({ uid, ...rest, isActive: false }));
+};
+
+export const unblockUser = (user) => async (dispatch) => {
+  const { uid, ...rest } = user;
+  databaseActions.updateUserProperty(uid, 'isActive', true);
+  dispatch(updateUserData({ uid, ...rest, isActive: true }));
+};
+
 export const login = ({ email, password }) => async (dispatch) => {
   try {
     await auth.signInWithEmailAndPassword(email, password);

@@ -13,12 +13,11 @@ export const putUserData = async (user) => {
   const { uid, ...rest } = user;
   const userRef = database.ref(`users/${uid}`);
   await userRef.set({ ...rest });
-  return Promise.resolve(user);
+  return user;
 };
 
-export const updateUserProperty = (userId, propertyName, value) => {
+export const updateUserProperty = (userId, propertyName, value) =>
   database.ref(`users/${userId}/${propertyName}`).set(value);
-};
 
 const parseUsersSnapshot = (usersSnapshot) => {
   const toLocaleDateString = (timestamp) => {
@@ -50,5 +49,5 @@ const parseUsersSnapshot = (usersSnapshot) => {
 export const fetchUsers = async () => {
   const userListRef = database.ref(`users/`);
   const usersSnapshot = await userListRef.once('value');
-  return Promise.resolve(parseUsersSnapshot(usersSnapshot));
+  return parseUsersSnapshot(usersSnapshot);
 };

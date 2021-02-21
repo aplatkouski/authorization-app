@@ -1,0 +1,10 @@
+@import "reset";
+@import "App";
+@import "components/LoginModal/LoginModal";
+@import "components/MainView/MainView";
+
+/* Must be in the end */
+@import "~react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+@import "~bootswatch/dist/united/variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/united/bootswatch";

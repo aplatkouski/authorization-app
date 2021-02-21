@@ -12,10 +12,10 @@ export const loginFailure = (errorMessage) => ({
   payload: errorMessage,
 });
 
-export const fetchUsers = (userID) => async (dispatch) => {
+export const fetchUsers = () => async (dispatch) => {
   dispatch(databaseActions.showLoader());
   try {
-    await databaseActions.fetchUsers(userID).then((users) =>
+    await databaseActions.fetchUsers().then((users) =>
       dispatch({
         type: t.FETCH_USERS,
         payload: users,
@@ -32,12 +32,17 @@ export const fetchUsers = (userID) => async (dispatch) => {
   dispatch(databaseActions.hideLoader());
 };
 
+const updateUserLoginDate = (uid) => {
+  databaseActions.updateUserProperty(uid, 'lastLoginDate', Date.now());
+};
+
 export const updateUserData = (user) => async (dispatch) => {
+  const { password: _, ...userWithOutPassword } = user;
   try {
-    await databaseActions.putUserData(user);
+    await databaseActions.putUserData(userWithOutPassword);
     dispatch({
       type: t.UPDATE_DATA,
-      payload: user,
+      payload: userWithOutPassword,
     });
   } catch (error) {
     if (error.message) {
@@ -49,35 +54,42 @@ export const updateUserData = (user) => async (dispatch) => {
   }
 };
 
-export const login = (user) => async (dispatch) => {
-  const { email, password } = user;
-  await auth.signInWithEmailAndPassword(email, password);
-  if (auth.currentUser) {
-    dispatch(loginSuccess(String(auth.currentUser.uid)));
-  } else {
-    dispatch(loginFailure('I cannot get UID of current user!'));
+export const login = ({ email, password }) => async (dispatch) => {
+  try {
+    await auth.signInWithEmailAndPassword(email, password);
+    if (auth.currentUser) {
+      const uid = String(auth.currentUser.uid);
+      dispatch(loginSuccess(uid));
+      updateUserLoginDate(uid);
+    } else {
+      dispatch(loginFailure('I cannot get UID of current user!'));
+    }
+  } catch ({ message }) {
+    if (message) {
+      dispatch(loginFailure(message));
+    }
   }
 };
 
 export const signUp = (newUser) => async (dispatch) => {
   try {
-    const { email, password } = newUser;
+    const { password, email, ...rest } = newUser;
     await auth.createUserWithEmailAndPassword(email, password);
-    auth.onAuthStateChanged(() => {
-      if (auth.currentUser) {
-        const uid = String(auth.currentUser.uid);
-        const user = { ...newUser, uid };
-        databaseActions.putUserData(user);
+    auth.onAuthStateChanged(async (currentUser) => {
+      if (currentUser) {
+        const uid = String(currentUser.uid);
+        const user = { email, ...rest, uid };
+        await databaseActions.putUserData(user);
         dispatch(loginSuccess(uid));
       } else {
         dispatch(loginFailure('I cannot get UID of new user!'));
       }
     });
-  } catch (error) {
-    if (error.message) {
+  } catch ({ message }) {
+    if (message) {
       dispatch({
         type: t.REGISTER_FAILURE,
-        payload: error.message,
+        payload: message,
       });
     }
   }

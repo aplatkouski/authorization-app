@@ -40,7 +40,7 @@ const handlers = {
   [t.UPDATE_DATA]: (state, { payload: newUserData }) => {
     const allUsers = [...state.allUsers];
     allUsers.splice(
-      state.allUsers.findIndex((user) => user.id === newUserData.id),
+      state.allUsers.findIndex((user) => user.uid === newUserData.uid),
       1,
       newUserData
     );

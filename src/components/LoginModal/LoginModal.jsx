@@ -1,8 +1,9 @@
+import AuthenticationForm from 'Components/AuthenticationForm';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
+import { Alert, Modal } from 'react-bootstrap';
 
-const LoginModal = ({ isAuth }) => {
+const LoginModal = ({ errorMessage, isAuth }) => {
   const [isRegistration, setRegistration] = React.useState(false);
 
   const handleRegistered = (event) => {
@@ -23,7 +24,11 @@ const LoginModal = ({ isAuth }) => {
           Authorization App
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>Body</Modal.Body>
+      <Modal.Body>
+        {errorMessage && (
+          <Alert className="text-warning text-center">{errorMessage}</Alert>
+        )}
+      </Modal.Body>
       <Modal.Footer className="pt-0 pb-0">
         {isRegistration ? (
           <div className="block-signup">
@@ -59,6 +64,7 @@ const LoginModal = ({ isAuth }) => {
 };
 
 LoginModal.propTypes = {
+  errorMessage: PropTypes.string.isRequired,
   isAuth: PropTypes.bool.isRequired,
 };
 

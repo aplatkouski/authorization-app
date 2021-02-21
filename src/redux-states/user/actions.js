@@ -2,6 +2,13 @@ import { auth } from 'Utils/firebase';
 import { databaseActions } from 'States/database';
 import * as t from './action-types';
 
+export const signOut = () => {
+  databaseActions.signOut();
+  return {
+    type: t.SIGN_OUT,
+  };
+};
+
 export const loginSuccess = (uid) => ({
   type: t.LOGIN_SUCCESS,
   payload: uid,
@@ -32,53 +39,41 @@ export const fetchUsers = () => async (dispatch) => {
   dispatch(databaseActions.hideLoader());
 };
 
-const updateUserLoginDate = (uid) => {
-  databaseActions.updateUserProperty(uid, 'lastLoginDate', Date.now());
-};
-
-export const updateUserData = (user) => async (dispatch) => {
-  const { password: _, ...userWithOutPassword } = user;
-  try {
-    await databaseActions.putUserData(userWithOutPassword);
-    dispatch({
-      type: t.UPDATE_DATA,
-      payload: userWithOutPassword,
-    });
-  } catch (error) {
-    if (error.message) {
-      dispatch({
-        type: t.UPDATE_FAILURE,
-        payload: error.message,
-      });
-    }
+export const changeUserStatus = (currentUserId, user, isActive) => async (dispatch) => {
+  const { uid } = user;
+  await databaseActions.updateUserProperty(uid, 'isActive', isActive);
+  dispatch({
+    type: t.UPDATE_DATA,
+    payload: { ...user, isActive },
+  });
+  if (uid === currentUserId && !isActive) {
+    dispatch(signOut());
   }
-};
-
-export const blockUser = (user) => async (dispatch) => {
-  const { uid, ...rest } = user;
-  databaseActions.updateUserProperty(uid, 'isActive', false);
-  dispatch(updateUserData({ uid, ...rest, isActive: false }));
-};
-
-export const unblockUser = (user) => async (dispatch) => {
-  const { uid, ...rest } = user;
-  databaseActions.updateUserProperty(uid, 'isActive', true);
-  dispatch(updateUserData({ uid, ...rest, isActive: true }));
 };
 
 export const login = ({ email, password }) => async (dispatch) => {
   try {
-    await auth.signInWithEmailAndPassword(email, password);
-    if (auth.currentUser) {
-      const uid = String(auth.currentUser.uid);
-      dispatch(loginSuccess(uid));
-      updateUserLoginDate(uid);
-    } else {
-      dispatch(loginFailure('I cannot get UID of current user!'));
-    }
+    const uid = await databaseActions.login({ email, password });
+    await databaseActions.updateUserProperty(uid, 'lastLoginDate', Date.now());
+    dispatch(loginSuccess(uid));
   } catch ({ message }) {
     if (message) {
       dispatch(loginFailure(message));
+    }
+  }
+};
+
+export const deleteUser = (currentUserId, uid) => async (dispatch) => {
+  try {
+    if (uid === currentUserId) {
+      dispatch(signOut());
+    }
+  } catch ({ message }) {
+    if (message) {
+      dispatch({
+        type: t.REGISTER_FAILURE,
+        payload: message,
+      });
     }
   }
 };

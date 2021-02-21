@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
-import { useRef } from 'react';
 import * as React from 'react';
+import { useRef } from 'react';
 import { Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from 'States/user';
 
 const UserTable = ({ users }) => {
   const dispatch = useDispatch();
+  const currentUserId = useSelector((state) => state.user.uid);
   const columns = [
     {
       dataField: 'id',
@@ -38,15 +39,21 @@ const UserTable = ({ users }) => {
 
   const node = useRef(null);
 
-  const handleBlockUsers = () => {
+  const handleStatusChange = (isActive) => {
     node.current.selectionContext.selected.forEach((uid) => {
-      dispatch(userActions.blockUser(users.find((user) => user.uid === uid)));
+      dispatch(
+        userActions.changeUserStatus(
+          currentUserId,
+          users.find((user) => user.uid === uid),
+          isActive
+        )
+      );
     });
   };
 
-  const handleUnblockUsers = () => {
+  const handleDelete = () => {
     node.current.selectionContext.selected.forEach((uid) => {
-      dispatch(userActions.unblockUser(users.find((user) => user.uid === uid)));
+      dispatch(userActions.deleteUser(currentUserId, uid));
     });
   };
 
@@ -54,13 +61,15 @@ const UserTable = ({ users }) => {
     return (
       <ButtonToolbar aria-label="Toolbar with button groups">
         <ButtonGroup className="mb-2" size="lg">
-          <Button onClick={handleBlockUsers} variant="outline-warning">
+          <Button onClick={() => handleStatusChange(false)} variant="outline-warning">
             Block
           </Button>
-          <Button onClick={handleUnblockUsers} variant="outline-success">
+          <Button onClick={() => handleStatusChange(true)} variant="outline-success">
             Unblock
           </Button>
-          <Button variant="outline-danger">Delete</Button>
+          <Button onClick={handleDelete} variant="outline-danger">
+            Delete
+          </Button>
         </ButtonGroup>
       </ButtonToolbar>
     );
